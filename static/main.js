@@ -33,10 +33,32 @@ function displayResults(data) {
 }
 
 function displayChart(data) {
-    // Input: data (object) - contains the following keys:
-    //        - documents (list) - list of documents
-    //        - indices (list) - list of indices   
-    //        - similarities (list) - list of similarities
-    // TODO: Implement function to display chart here
-    //       There is a canvas element in the HTML file with the id 'similarity-chart'
+    const ctx = document.getElementById('similarity-chart').getContext('2d');
+    
+    const labels = data.indices.map(index => `Document ${index + 1}`);
+    const similarities = data.similarities;
+    if (window.myChart) {
+        window.myChart.destroy();
+    }
+
+    window.myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Cosine Similarity',
+                data: similarities,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
