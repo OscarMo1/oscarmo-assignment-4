@@ -1,36 +1,36 @@
 name: Python Application
 
-# Controls when the workflow will run
 on:
   push:
-    branches: [ main ]  # You can change the branch name as per your repo setup
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
-# Set the job's environment to Python and Ubuntu
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Check out the repository code
+    # Step 1: Check out the repository
     - name: Check out repository code
       uses: actions/checkout@v2
 
-    # Set up Python 3.10 (or the version required for your project)
-    - name: Set up Python
+    # Step 2: Set up Python (explicitly install Python version)
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
 
-    # Install dependencies defined in your `Makefile`
+    # Step 3: Install dependencies using the Makefile
     - name: Install Dependencies
-      run: make install
+      run: |
+        python3 -m venv venv  # Manually create the virtual environment
+        . venv/bin/activate    # Activate the virtual environment
+        make install           # Install dependencies from the Makefile
 
-    # Run your server, then let it sleep for a few seconds to ensure the server starts properly
+    # Step 4: Run the server (ensure enough time for server startup)
     - name: Run the application
       run: |
-        make run &
-        sleep 5  # Adjust this time as needed to ensure the server starts up
-
-    # Optionally, you can add more commands here to simulate further testing
+        . venv/bin/activate    # Activate the virtual environment
+        make run &             # Start the application
+        sleep 5                # Wait to ensure the server has time to start
