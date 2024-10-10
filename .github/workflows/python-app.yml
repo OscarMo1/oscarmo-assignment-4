@@ -15,22 +15,22 @@ jobs:
     - name: Check out repository code
       uses: actions/checkout@v2
 
-    # Step 2: Set up Python (explicitly install Python version)
+    # Step 2: Set up Python 3.x (ensures Python is installed and available)
     - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: '3.10'
+        python-version: '3.10'  # Adjust the Python version to what your project requires
 
     # Step 3: Install dependencies using the Makefile
     - name: Install Dependencies
       run: |
-        python3 -m venv venv  # Manually create the virtual environment
-        . venv/bin/activate    # Activate the virtual environment
-        make install           # Install dependencies from the Makefile
+        python3 -m venv venv  # Create virtual environment
+        source venv/bin/activate  # Activate the virtual environment
+        pip install -r requirements.txt  # Install project dependencies
 
-    # Step 4: Run the server (ensure enough time for server startup)
+    # Step 4: Run the application (ensure enough time for server startup)
     - name: Run the application
       run: |
-        . venv/bin/activate    # Activate the virtual environment
-        make run &             # Start the application
-        sleep 5                # Wait to ensure the server has time to start
+        source venv/bin/activate  # Activate the virtual environment
+        make run &                # Start the application
+        sleep 5                   # Wait to ensure the server has time to start
